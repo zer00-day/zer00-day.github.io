@@ -13,7 +13,11 @@ const qrImage = document.getElementById("qrImage");
 
 /* SHARE */
 
-shareBtn.addEventListener("click", async () => {
+shareBtn.addEventListener("click", async (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
 
     const shareData = {
         title: "zero — Links",
@@ -22,39 +26,26 @@ shareBtn.addEventListener("click", async () => {
     };
 
 
-    if (navigator.share) {
+    if (!navigator.share) {
 
-        try {
+        alert(
+            "Sharing is not supported in this browser. Please open this page in Chrome or your device browser."
+        );
 
-            await navigator.share(shareData);
+        return;
+    }
 
-        } catch (error) {
 
-            if (error.name !== "AbortError") {
+    try {
 
-                console.log(
-                    "Share failed:",
-                    error
-                );
+        await navigator.share(shareData);
 
-            }
+    } catch (error) {
 
-        }
-
-    } else {
-
-        try {
-
-            await navigator.clipboard.writeText(
-                window.location.href
-            );
-
-            showCopied();
-
-        } catch (error) {
+        if (error.name !== "AbortError") {
 
             console.log(
-                "Copy failed:",
+                "Share failed:",
                 error
             );
 
@@ -67,7 +58,11 @@ shareBtn.addEventListener("click", async () => {
 
 /* COPY */
 
-copyBtn.addEventListener("click", async () => {
+copyBtn.addEventListener("click", async (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
 
     try {
 
@@ -138,7 +133,11 @@ function showCopied() {
 
 /* QR */
 
-qrBtn.addEventListener("click", () => {
+qrBtn.addEventListener("click", (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
 
     const pageUrl =
         window.location.href;
@@ -164,7 +163,11 @@ qrBtn.addEventListener("click", () => {
 
 /* CLOSE QR */
 
-qrClose.addEventListener("click", () => {
+qrClose.addEventListener("click", (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
 
     qrPanel.classList.remove(
         "active"
