@@ -11,80 +11,189 @@ const qrPanel = document.getElementById("qrPanel");
 const qrImage = document.getElementById("qrImage");
 
 
+/* STATE */
+
+let copyResetTimer = null;
+let qrPreviousFocus = null;
+
+
+/* ACCESSIBILITY SETUP */
+
+if (qrBtn) {
+    qrBtn.setAttribute("aria-expanded", "false");
+}
+
+if (qrPanel) {
+    qrPanel.setAttribute("aria-hidden", "true");
+}
+
+
 /* SHARE */
 
-shareBtn.addEventListener("click", async (event) => {
+if (shareBtn) {
 
-    event.preventDefault();
-    event.stopPropagation();
+    shareBtn.addEventListener("click", async (event) => {
 
-
-    const shareData = {
-        title: "zero — Links",
-        text: "Explore zero's links.",
-        url: window.location.href
-    };
+        event.preventDefault();
+        event.stopPropagation();
 
 
-    if (!navigator.share) {
+        const shareData = {
+            title: "zero — Links",
+            text: "Explore zero's links.",
+            url: window.location.href
+        };
 
-        alert(
-            "Sharing is not supported in this browser. Please open this page in Chrome or your device browser."
-        );
+
+        if (!navigator.share) {
+
+            alert(
+                "Sharing is not supported in this browser. Please open this page in Chrome or your device browser."
+            );
+
+            return;
+        }
+
+
+        try {
+
+            await navigator.share(shareData);
+
+        } catch (error) {
+
+            if (error.name !== "AbortError") {
+
+                console.log(
+                    "Share failed:",
+                    error
+                );
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* COPY */
+
+if (copyBtn) {
+
+    copyBtn.addEventListener("click", async (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        const pageUrl =
+            window.location.href;
+
+
+        try {
+
+            await copyToClipboard(pageUrl);
+
+            showCopied();
+
+        } catch (error) {
+
+            console.log(
+                "Copy failed:",
+                error
+            );
+
+            alert(
+                "Unable to copy the link. Please copy the address from your browser."
+            );
+
+        }
+
+    });
+
+}
+
+
+/* CLIPBOARD */
+
+async function copyToClipboard(text) {
+
+    if (
+        navigator.clipboard &&
+        typeof navigator.clipboard.writeText === "function"
+    ) {
+
+        await navigator.clipboard.writeText(text);
 
         return;
     }
 
 
-    try {
+    const textarea =
+        document.createElement("textarea");
 
-        await navigator.share(shareData);
 
-    } catch (error) {
+    textarea.value = text;
 
-        if (error.name !== "AbortError") {
+    textarea.setAttribute(
+        "readonly",
+        ""
+    );
 
-            console.log(
-                "Share failed:",
-                error
-            );
+    textarea.style.position =
+        "fixed";
 
-        }
+    textarea.style.opacity =
+        "0";
+
+    textarea.style.pointerEvents =
+        "none";
+
+
+    document.body.appendChild(
+        textarea
+    );
+
+
+    textarea.select();
+
+    textarea.setSelectionRange(
+        0,
+        textarea.value.length
+    );
+
+
+    const successful =
+        document.execCommand("copy");
+
+
+    textarea.remove();
+
+
+    if (!successful) {
+
+        throw new Error(
+            "Clipboard copy failed."
+        );
 
     }
 
-});
+}
 
 
-/* COPY */
-
-copyBtn.addEventListener("click", async (event) => {
-
-    event.preventDefault();
-    event.stopPropagation();
-
-
-    try {
-
-        await navigator.clipboard.writeText(
-            window.location.href
-        );
-
-        showCopied();
-
-    } catch (error) {
-
-        console.log(
-            "Copy failed:",
-            error
-        );
-
-    }
-
-});
-
+/* COPIED STATE */
 
 function showCopied() {
+
+    if (
+        !copyBtn ||
+        !copyText ||
+        !copyIcon
+    ) {
+        return;
+    }
+
 
     const oldText =
         copyText.textContent;
@@ -114,29 +223,86 @@ function showCopied() {
     );
 
 
-    setTimeout(() => {
+    copyBtn.setAttribute(
+        "aria-label",
+        "Link copied"
+    );
 
-        copyText.textContent =
-            oldText;
 
-        copyIcon.innerHTML =
-            oldIcon;
+    if (copyResetTimer) {
 
-        copyBtn.classList.remove(
-            "copied"
+        clearTimeout(
+            copyResetTimer
         );
 
-    }, 1500);
+    }
+
+
+    copyResetTimer =
+        setTimeout(() => {
+
+            copyText.textContent =
+                oldText;
+
+            copyIcon.innerHTML =
+                oldIcon;
+
+            copyBtn.classList.remove(
+                "copied"
+            );
+
+            copyBtn.setAttribute(
+                "aria-label",
+                "Copy Zero's link"
+            );
+
+        }, 1500);
 
 }
 
 
 /* QR */
 
-qrBtn.addEventListener("click", (event) => {
+if (qrBtn) {
 
-    event.preventDefault();
-    event.stopPropagation();
+    qrBtn.addEventListener("click", (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        if (
+            qrPanel &&
+            qrPanel.classList.contains("active")
+        ) {
+
+            closeQr();
+
+            return;
+        }
+
+
+        openQr();
+
+    });
+
+}
+
+
+/* OPEN QR */
+
+function openQr() {
+
+    if (
+        !qrPanel ||
+        !qrImage
+    ) {
+        return;
+    }
+
+
+    qrPreviousFocus =
+        document.activeElement;
 
 
     const pageUrl =
@@ -158,15 +324,54 @@ qrBtn.addEventListener("click", (event) => {
         "false"
     );
 
-});
+
+    if (qrBtn) {
+
+        qrBtn.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+    }
+
+
+    if (qrClose) {
+
+        requestAnimationFrame(() => {
+
+            qrClose.focus();
+
+        });
+
+    }
+
+}
 
 
 /* CLOSE QR */
 
-qrClose.addEventListener("click", (event) => {
+if (qrClose) {
 
-    event.preventDefault();
-    event.stopPropagation();
+    qrClose.addEventListener("click", (event) => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        closeQr();
+
+    });
+
+}
+
+
+/* CLOSE QR FUNCTION */
+
+function closeQr() {
+
+    if (!qrPanel) {
+        return;
+    }
 
 
     qrPanel.classList.remove(
@@ -179,7 +384,47 @@ qrClose.addEventListener("click", (event) => {
         "true"
     );
 
-});
+
+    if (qrBtn) {
+
+        qrBtn.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+
+    if (
+        qrPreviousFocus &&
+        typeof qrPreviousFocus.focus === "function"
+    ) {
+
+        qrPreviousFocus.focus();
+
+    }
+
+}
+
+
+/* ESCAPE TO CLOSE QR */
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Escape" &&
+            qrPanel &&
+            qrPanel.classList.contains("active")
+        ) {
+
+            closeQr();
+
+        }
+
+    }
+);
 
 
 /* INTERNAL PAGE TRANSITION */
@@ -191,6 +436,26 @@ document
         link.addEventListener(
             "click",
             event => {
+
+                /*
+                 * Allow normal browser behavior for:
+                 * - middle click
+                 * - Ctrl + click
+                 * - Cmd + click
+                 * - Shift + click
+                 * - Alt + click
+                 */
+
+                if (
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                ) {
+                    return;
+                }
+
 
                 const destination =
                     link.href;
