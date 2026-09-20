@@ -1,145 +1,383 @@
-const shareBtn = document.getElementById("shareBtn");
+/* ================================
+   ELEMENTS
+================================ */
 
-const copyBtn = document.getElementById("copyBtn");
-const copyText = document.getElementById("copyText");
-const copyIcon = document.getElementById("copyIcon");
+const shareBtn =
+    document.getElementById("shareBtn");
 
-const qrBtn = document.getElementById("qrBtn");
-const qrClose = document.getElementById("qrClose");
+const copyBtn =
+    document.getElementById("copyBtn");
 
-const qrPanel = document.getElementById("qrPanel");
-const qrImage = document.getElementById("qrImage");
+const copyText =
+    document.getElementById("copyText");
+
+const copyIcon =
+    document.getElementById("copyIcon");
+
+const qrBtn =
+    document.getElementById("qrBtn");
+
+const qrClose =
+    document.getElementById("qrClose");
+
+const qrPanel =
+    document.getElementById("qrPanel");
+
+const qrImage =
+    document.getElementById("qrImage");
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+const themeToggleIcon =
+    themeToggle?.querySelector(
+        ".theme-toggle-icon"
+    );
+
+const themeColorMeta =
+    document.querySelector(
+        'meta[name="theme-color"]'
+    );
 
 
-/* STATE */
+/* ================================
+   STATE
+================================ */
 
 let copyResetTimer = null;
+
 let qrPreviousFocus = null;
 
 
-/* ACCESSIBILITY SETUP */
+/* ================================
+   THEME
+================================ */
 
-if (qrBtn) {
-    qrBtn.setAttribute("aria-expanded", "false");
-}
+function applyTheme(
+    theme,
+    save = false
+) {
 
-if (qrPanel) {
-    qrPanel.setAttribute("aria-hidden", "true");
-}
-
-
-/* SHARE */
-
-if (shareBtn) {
-
-    shareBtn.addEventListener("click", async (event) => {
-
-        event.preventDefault();
-        event.stopPropagation();
+    const isDark =
+        theme === "dark";
 
 
-        const shareData = {
-            title: "zero — Links",
-            text: "Explore zero's links.",
-            url: window.location.href
-        };
+    document.documentElement.setAttribute(
+        "data-theme",
+        isDark
+            ? "dark"
+            : "light"
+    );
 
 
-        if (!navigator.share) {
+    if (themeToggle) {
 
-            alert(
-                "Sharing is not supported in this browser. Please open this page in Chrome or your device browser."
-            );
+        themeToggle.setAttribute(
+            "aria-pressed",
+            String(isDark)
+        );
 
-            return;
-        }
 
+        themeToggle.setAttribute(
+            "aria-label",
+            isDark
+                ? "Switch to light mode"
+                : "Switch to dark mode"
+        );
+
+
+        themeToggle.setAttribute(
+            "title",
+            isDark
+                ? "Switch to light mode"
+                : "Switch to dark mode"
+        );
+
+    }
+
+
+    if (themeColorMeta) {
+
+        themeColorMeta.setAttribute(
+            "content",
+            isDark
+                ? "#0d0d0d"
+                : "#f5f5f3"
+        );
+
+    }
+
+
+    if (save) {
 
         try {
 
-            await navigator.share(shareData);
+            localStorage.setItem(
+                "zero-theme",
+                isDark
+                    ? "dark"
+                    : "light"
+            );
 
         } catch (error) {
 
-            if (error.name !== "AbortError") {
+            // Ignore storage access errors.
+
+        }
+
+    }
+
+}
+
+
+/* INITIAL THEME */
+
+let savedTheme = null;
+
+
+try {
+
+    savedTheme =
+        localStorage.getItem(
+            "zero-theme"
+        );
+
+} catch (error) {
+
+    // Ignore storage access errors.
+
+}
+
+
+const systemPrefersDark =
+    window.matchMedia &&
+    window.matchMedia(
+        "(prefers-color-scheme: dark)"
+    ).matches;
+
+
+const initialTheme =
+    savedTheme === "dark" ||
+    savedTheme === "light"
+
+        ? savedTheme
+
+        : (
+            systemPrefersDark
+                ? "dark"
+                : "light"
+        );
+
+
+applyTheme(
+    initialTheme
+);
+
+
+/* THEME TOGGLE */
+
+if (themeToggle) {
+
+    themeToggle.addEventListener(
+        "click",
+        () => {
+
+            const currentTheme =
+                document.documentElement
+                    .getAttribute(
+                        "data-theme"
+                    );
+
+
+            applyTheme(
+                currentTheme === "dark"
+                    ? "light"
+                    : "dark",
+                true
+            );
+
+        }
+    );
+
+}
+
+
+/* ================================
+   ACCESSIBILITY SETUP
+================================ */
+
+if (qrBtn) {
+
+    qrBtn.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+}
+
+
+if (qrPanel) {
+
+    qrPanel.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+/* ================================
+   SHARE
+================================ */
+
+if (shareBtn) {
+
+    shareBtn.addEventListener(
+        "click",
+        async (event) => {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            const shareData = {
+
+                title:
+                    "zero — Links",
+
+                text:
+                    "Explore zero's links.",
+
+                url:
+                    window.location.href
+
+            };
+
+
+            if (!navigator.share) {
+
+                alert(
+                    "Sharing is not supported in this browser. Please open this page in Chrome or your device browser."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                await navigator.share(
+                    shareData
+                );
+
+            } catch (error) {
+
+                if (
+                    error.name !==
+                    "AbortError"
+                ) {
+
+                    console.log(
+                        "Share failed:",
+                        error
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ================================
+   COPY
+================================ */
+
+if (copyBtn) {
+
+    copyBtn.addEventListener(
+        "click",
+        async (event) => {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            const pageUrl =
+                window.location.href;
+
+
+            try {
+
+                await copyToClipboard(
+                    pageUrl
+                );
+
+                showCopied();
+
+            } catch (error) {
 
                 console.log(
-                    "Share failed:",
+                    "Copy failed:",
                     error
+                );
+
+
+                alert(
+                    "Unable to copy the link. Please copy the address from your browser."
                 );
 
             }
 
         }
-
-    });
-
-}
-
-
-/* COPY */
-
-if (copyBtn) {
-
-    copyBtn.addEventListener("click", async (event) => {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-
-        const pageUrl =
-            window.location.href;
-
-
-        try {
-
-            await copyToClipboard(pageUrl);
-
-            showCopied();
-
-        } catch (error) {
-
-            console.log(
-                "Copy failed:",
-                error
-            );
-
-            alert(
-                "Unable to copy the link. Please copy the address from your browser."
-            );
-
-        }
-
-    });
+    );
 
 }
 
 
-/* CLIPBOARD */
+/* ================================
+   CLIPBOARD
+================================ */
 
-async function copyToClipboard(text) {
+async function copyToClipboard(
+    text
+) {
 
     if (
         navigator.clipboard &&
-        typeof navigator.clipboard.writeText === "function"
+        typeof navigator.clipboard.writeText ===
+            "function"
     ) {
 
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(
+            text
+        );
 
         return;
+
     }
 
 
     const textarea =
-        document.createElement("textarea");
+        document.createElement(
+            "textarea"
+        );
 
 
     textarea.value = text;
+
 
     textarea.setAttribute(
         "readonly",
         ""
     );
+
 
     textarea.style.position =
         "fixed";
@@ -158,6 +396,7 @@ async function copyToClipboard(text) {
 
     textarea.select();
 
+
     textarea.setSelectionRange(
         0,
         textarea.value.length
@@ -165,7 +404,9 @@ async function copyToClipboard(text) {
 
 
     const successful =
-        document.execCommand("copy");
+        document.execCommand(
+            "copy"
+        );
 
 
     textarea.remove();
@@ -182,7 +423,9 @@ async function copyToClipboard(text) {
 }
 
 
-/* COPIED STATE */
+/* ================================
+   COPIED STATE
+================================ */
 
 function showCopied() {
 
@@ -197,6 +440,7 @@ function showCopied() {
 
     const oldText =
         copyText.textContent;
+
 
     const oldIcon =
         copyIcon.innerHTML;
@@ -239,57 +483,74 @@ function showCopied() {
 
 
     copyResetTimer =
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            copyText.textContent =
-                oldText;
+                copyText.textContent =
+                    oldText;
 
-            copyIcon.innerHTML =
-                oldIcon;
 
-            copyBtn.classList.remove(
-                "copied"
-            );
+                copyIcon.innerHTML =
+                    oldIcon;
 
-            copyBtn.setAttribute(
-                "aria-label",
-                "Copy Zero's link"
-            );
 
-        }, 1500);
+                copyBtn.classList.remove(
+                    "copied"
+                );
+
+
+                copyBtn.setAttribute(
+                    "aria-label",
+                    "Copy Zero's link"
+                );
+
+            },
+            1500
+        );
 
 }
 
 
-/* QR */
+/* ================================
+   QR
+================================ */
 
 if (qrBtn) {
 
-    qrBtn.addEventListener("click", (event) => {
+    qrBtn.addEventListener(
+        "click",
+        (event) => {
 
-        event.preventDefault();
-        event.stopPropagation();
+            event.preventDefault();
+
+            event.stopPropagation();
 
 
-        if (
-            qrPanel &&
-            qrPanel.classList.contains("active")
-        ) {
+            if (
+                qrPanel &&
+                qrPanel.classList.contains(
+                    "active"
+                )
+            ) {
 
-            closeQr();
+                closeQr();
 
-            return;
+                return;
+
+            }
+
+
+            openQr();
+
         }
-
-
-        openQr();
-
-    });
+    );
 
 }
 
 
-/* OPEN QR */
+/* ================================
+   OPEN QR
+================================ */
 
 function openQr() {
 
@@ -311,7 +572,10 @@ function openQr() {
 
     qrImage.src =
         "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="
-        + encodeURIComponent(pageUrl);
+        +
+        encodeURIComponent(
+            pageUrl
+        );
 
 
     qrPanel.classList.add(
@@ -337,35 +601,45 @@ function openQr() {
 
     if (qrClose) {
 
-        requestAnimationFrame(() => {
+        requestAnimationFrame(
+            () => {
 
-            qrClose.focus();
+                qrClose.focus();
 
-        });
+            }
+        );
 
     }
 
 }
 
 
-/* CLOSE QR */
+/* ================================
+   CLOSE QR BUTTON
+================================ */
 
 if (qrClose) {
 
-    qrClose.addEventListener("click", (event) => {
+    qrClose.addEventListener(
+        "click",
+        (event) => {
 
-        event.preventDefault();
-        event.stopPropagation();
+            event.preventDefault();
+
+            event.stopPropagation();
 
 
-        closeQr();
+            closeQr();
 
-    });
+        }
+    );
 
 }
 
 
-/* CLOSE QR FUNCTION */
+/* ================================
+   CLOSE QR
+================================ */
 
 function closeQr() {
 
@@ -397,7 +671,8 @@ function closeQr() {
 
     if (
         qrPreviousFocus &&
-        typeof qrPreviousFocus.focus === "function"
+        typeof qrPreviousFocus.focus ===
+            "function"
     ) {
 
         qrPreviousFocus.focus();
@@ -407,7 +682,9 @@ function closeQr() {
 }
 
 
-/* ESCAPE TO CLOSE QR */
+/* ================================
+   ESCAPE TO CLOSE QR
+================================ */
 
 document.addEventListener(
     "keydown",
@@ -416,7 +693,9 @@ document.addEventListener(
         if (
             event.key === "Escape" &&
             qrPanel &&
-            qrPanel.classList.contains("active")
+            qrPanel.classList.contains(
+                "active"
+            )
         ) {
 
             closeQr();
@@ -427,61 +706,72 @@ document.addEventListener(
 );
 
 
-/* INTERNAL PAGE TRANSITION */
+/* ================================
+   INTERNAL PAGE TRANSITION
+================================ */
 
 document
-    .querySelectorAll(".page-link")
-    .forEach(link => {
+    .querySelectorAll(
+        ".page-link"
+    )
+    .forEach(
+        (link) => {
 
-        link.addEventListener(
-            "click",
-            event => {
+            link.addEventListener(
+                "click",
+                (event) => {
 
-                /*
-                 * Allow normal browser behavior for:
-                 * - middle click
-                 * - Ctrl + click
-                 * - Cmd + click
-                 * - Shift + click
-                 * - Alt + click
-                 */
+                    /*
+                     * Allow normal browser behavior for:
+                     * - middle click
+                     * - Ctrl + click
+                     * - Cmd + click
+                     * - Shift + click
+                     * - Alt + click
+                     */
 
-                if (
-                    event.button !== 0 ||
-                    event.metaKey ||
-                    event.ctrlKey ||
-                    event.shiftKey ||
-                    event.altKey
-                ) {
-                    return;
+                    if (
+                        event.button !== 0 ||
+                        event.metaKey ||
+                        event.ctrlKey ||
+                        event.shiftKey ||
+                        event.altKey
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const destination =
+                        link.href;
+
+
+                    if (!destination) {
+                        return;
+                    }
+
+
+                    event.preventDefault();
+
+
+                    document.body.classList.add(
+                        "page-exit"
+                    );
+
+
+                    setTimeout(
+                        () => {
+
+                            window.location.href =
+                                destination;
+
+                        },
+                        180
+                    );
+
                 }
+            );
 
-
-                const destination =
-                    link.href;
-
-
-                if (!destination) {
-                    return;
-                }
-
-
-                event.preventDefault();
-
-
-                document.body.classList.add(
-                    "page-exit"
-                );
-
-
-                setTimeout(() => {
-
-                    window.location.href =
-                        destination;
-
-                }, 180);
-
-            }
-        );
-
-    });
+        }
+    );

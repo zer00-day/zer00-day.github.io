@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>zero — About</title>
+
+    <link
+        rel="icon"
+        href="assets/profile.jpg"
+        type="image/jpeg"
+    >
+
+    <meta
+        name="theme-color"
+        content="#f5f5f3"
+        id="themeColorMeta"
+    >
+
+    <meta
+        name="description"
+        content="About Zero — a vibe coder exploring code, web development, and interesting problems."
+    >
+
+    <script>
+        (() => {
+            try {
+                const savedTheme =
+                    localStorage.getItem("zero-theme");
+
+                if (
+                    savedTheme === "dark" ||
+                    savedTheme === "light"
+                ) {
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        savedTheme
+                    );
+
+                    return;
+                }
+
+                if (
+                    window.matchMedia &&
+                    window.matchMedia(
+                        "(prefers-color-scheme: dark)"
+                    ).matches
+                ) {
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        "dark"
+                    );
+                }
+
+            } catch (error) {
+                // Ignore storage access errors.
+            }
+        })();
+    </script>
+
+    <link
+        rel="stylesheet"
+        href="about.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="about-page">
+
+
+        <!-- HEADER -->
+
+        <header class="about-header">
+
+            <a
+                href="platforms.html"
+                class="back-link page-link"
+                aria-label="Back to links"
+            >
+
+                <span
+                    class="back-icon"
+                    aria-hidden="true"
+                >
+                    ←
+                </span>
+
+                <span>
+                    Back
+                </span>
+
+            </a>
+
+
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Switch to dark mode"
+                aria-pressed="false"
+                title="Switch to dark mode"
+            >
+
+                <span
+                    class="theme-toggle-icon"
+                    aria-hidden="true"
+                >
+
+                    <svg
+                        class="theme-icon theme-icon-moon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M21 12.8A8.5 8.5 0 1 1 11.2 3A6.7 6.7 0 0 0 21 12.8Z"
+                        ></path>
+
+                    </svg>
+
+
+                    <svg
+                        class="theme-icon theme-icon-sun"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    >
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="4"
+                        ></circle>
+
+                        <path d="M12 2v2"></path>
+                        <path d="M12 20v2"></path>
+
+                        <path
+                            d="m4.93 4.93 1.41 1.41"
+                        ></path>
+
+                        <path
+                            d="m17.66 17.66 1.41 1.41"
+                        ></path>
+
+                        <path d="M2 12h2"></path>
+                        <path d="M20 12h2"></path>
+
+                        <path
+                            d="m6.34 17.66-1.41 1.41"
+                        ></path>
+
+                        <path
+                            d="m19.07 4.93-1.41 1.41"
+                        ></path>
+
+                    </svg>
+
+                </span>
+
+            </button>
+
+        </header>
+
+
+
+        <!-- ABOUT -->
+
+        <section class="about-card">
+
+            <div class="about-label">
+                ABOUT
+            </div>
+
+
+            <div class="about-content">
+
+                <h1>
+                    About Zero
+                </h1>
+
+
+                <div class="about-copy">
+
+                    <p>
+                        I’m a vibe coder who builds, breaks,
+                        and rebuilds things just to understand
+                        how they work.
+                    </p>
+
+
+                    <p>
+                        I spend my time exploring code,
+                        web development, and whatever
+                        interesting problem lands in front of me.
+                    </p>
+
+
+                    <p>
+                        I don’t always start with a perfect plan.
+                        Sometimes I just start building, then
+                        figure things out along the way.
+                    </p>
+
+                </div>
+
+
+                <div class="about-signature">
+
+                    <span>
+                        Code.
+                    </span>
+
+                    <span>
+                        Break.
+                    </span>
+
+                    <span>
+                        Learn.
+                    </span>
+
+                    <span>
+                        Build again.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FOOTER -->
+
+        <footer class="about-footer">
+            © 2026 zero
+        </footer>
+
+    </main>
+
+
+
+    <script>
+
+        (() => {
+
+            const root =
+                document.documentElement;
+
+            const themeToggle =
+                document.getElementById(
+                    "themeToggle"
+                );
+
+            const themeColorMeta =
+                document.getElementById(
+                    "themeColorMeta"
+                );
+
+
+            function getTheme() {
+
+                return (
+                    root.getAttribute(
+                        "data-theme"
+                    ) || "light"
+                );
+
+            }
+
+
+            function updateThemeUI(theme) {
+
+                const isDark =
+                    theme === "dark";
+
+
+                if (themeToggle) {
+
+                    themeToggle.setAttribute(
+                        "aria-pressed",
+                        String(isDark)
+                    );
+
+                    themeToggle.setAttribute(
+                        "aria-label",
+                        isDark
+                            ? "Switch to light mode"
+                            : "Switch to dark mode"
+                    );
+
+                    themeToggle.setAttribute(
+                        "title",
+                        isDark
+                            ? "Switch to light mode"
+                            : "Switch to dark mode"
+                    );
+
+                }
+
+
+                if (themeColorMeta) {
+
+                    themeColorMeta.setAttribute(
+                        "content",
+                        isDark
+                            ? "#0d0d0d"
+                            : "#f5f5f3"
+                    );
+
+                }
+
+            }
+
+
+            function applyTheme(
+                theme,
+                save = true
+            ) {
+
+                root.setAttribute(
+                    "data-theme",
+                    theme
+                );
+
+
+                if (save) {
+
+                    try {
+
+                        localStorage.setItem(
+                            "zero-theme",
+                            theme
+                        );
+
+                    } catch (error) {
+
+                        // Ignore storage access errors.
+
+                    }
+
+                }
+
+
+                updateThemeUI(
+                    theme
+                );
+
+            }
+
+
+            updateThemeUI(
+                getTheme()
+            );
+
+
+            if (themeToggle) {
+
+                themeToggle.addEventListener(
+                    "click",
+                    () => {
+
+                        const currentTheme =
+                            getTheme();
+
+                        const nextTheme =
+                            currentTheme === "dark"
+                                ? "light"
+                                : "dark";
+
+                        applyTheme(
+                            nextTheme
+                        );
+
+                    }
+                );
+
+            }
+
+
+            document
+                .querySelectorAll(
+                    ".page-link"
+                )
+                .forEach(
+                    link => {
+
+                        link.addEventListener(
+                            "click",
+                            event => {
+
+                                if (
+                                    event.button !== 0 ||
+                                    event.metaKey ||
+                                    event.ctrlKey ||
+                                    event.shiftKey ||
+                                    event.altKey
+                                ) {
+                                    return;
+                                }
+
+
+                                const destination =
+                                    link.href;
+
+
+                                if (!destination) {
+                                    return;
+                                }
+
+
+                                event.preventDefault();
+
+
+                                document.body.classList.add(
+                                    "page-exit"
+                                );
+
+
+                                setTimeout(
+                                    () => {
+
+                                        window.location.href =
+                                            destination;
+
+                                    },
+                                    180
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+        })();
+
+    </script>
+
+</body>
+
+</html>
