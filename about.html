@@ -59,9 +59,7 @@
                     );
                 }
 
-            } catch (error) {
-                // Ignore storage access errors.
-            }
+            } catch (error) {}
         })();
     </script>
 
@@ -76,9 +74,6 @@
 <body>
 
     <main class="about-page">
-
-
-        <!-- HEADER -->
 
         <header class="about-header">
 
@@ -101,86 +96,8 @@
 
             </a>
 
-
-            <button
-                type="button"
-                class="theme-toggle"
-                id="themeToggle"
-                aria-label="Switch to dark mode"
-                aria-pressed="false"
-                title="Switch to dark mode"
-            >
-
-                <span
-                    class="theme-toggle-icon"
-                    aria-hidden="true"
-                >
-
-                    <svg
-                        class="theme-icon theme-icon-moon"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-
-                        <path
-                            d="M21 12.8A8.5 8.5 0 1 1 11.2 3A6.7 6.7 0 0 0 21 12.8Z"
-                        ></path>
-
-                    </svg>
-
-
-                    <svg
-                        class="theme-icon theme-icon-sun"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                    >
-
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="4"
-                        ></circle>
-
-                        <path d="M12 2v2"></path>
-                        <path d="M12 20v2"></path>
-
-                        <path
-                            d="m4.93 4.93 1.41 1.41"
-                        ></path>
-
-                        <path
-                            d="m17.66 17.66 1.41 1.41"
-                        ></path>
-
-                        <path d="M2 12h2"></path>
-                        <path d="M20 12h2"></path>
-
-                        <path
-                            d="m6.34 17.66-1.41 1.41"
-                        ></path>
-
-                        <path
-                            d="m19.07 4.93-1.41 1.41"
-                        ></path>
-
-                    </svg>
-
-                </span>
-
-            </button>
-
         </header>
 
-
-
-        <!-- ABOUT -->
 
         <section class="about-card">
 
@@ -246,15 +163,11 @@
         </section>
 
 
-
-        <!-- FOOTER -->
-
         <footer class="about-footer">
             © 2026 zero
         </footer>
 
     </main>
-
 
 
     <script>
@@ -263,11 +176,6 @@
 
             const root =
                 document.documentElement;
-
-            const themeToggle =
-                document.getElementById(
-                    "themeToggle"
-                );
 
             const themeColorMeta =
                 document.getElementById(
@@ -286,34 +194,10 @@
             }
 
 
-            function updateThemeUI(theme) {
+            function updateThemeMeta(theme) {
 
                 const isDark =
                     theme === "dark";
-
-
-                if (themeToggle) {
-
-                    themeToggle.setAttribute(
-                        "aria-pressed",
-                        String(isDark)
-                    );
-
-                    themeToggle.setAttribute(
-                        "aria-label",
-                        isDark
-                            ? "Switch to light mode"
-                            : "Switch to dark mode"
-                    );
-
-                    themeToggle.setAttribute(
-                        "title",
-                        isDark
-                            ? "Switch to light mode"
-                            : "Switch to dark mode"
-                    );
-
-                }
 
 
                 if (themeColorMeta) {
@@ -330,69 +214,9 @@
             }
 
 
-            function applyTheme(
-                theme,
-                save = true
-            ) {
-
-                root.setAttribute(
-                    "data-theme",
-                    theme
-                );
-
-
-                if (save) {
-
-                    try {
-
-                        localStorage.setItem(
-                            "zero-theme",
-                            theme
-                        );
-
-                    } catch (error) {
-
-                        // Ignore storage access errors.
-
-                    }
-
-                }
-
-
-                updateThemeUI(
-                    theme
-                );
-
-            }
-
-
-            updateThemeUI(
+            updateThemeMeta(
                 getTheme()
             );
-
-
-            if (themeToggle) {
-
-                themeToggle.addEventListener(
-                    "click",
-                    () => {
-
-                        const currentTheme =
-                            getTheme();
-
-                        const nextTheme =
-                            currentTheme === "dark"
-                                ? "light"
-                                : "dark";
-
-                        applyTheme(
-                            nextTheme
-                        );
-
-                    }
-                );
-
-            }
 
 
             document

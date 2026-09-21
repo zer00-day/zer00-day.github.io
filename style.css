@@ -50,8 +50,6 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-/* PAGE */
-
 .profile-page {
     width: 100%;
     max-width: 430px;
@@ -67,15 +65,13 @@ body {
         both;
 }
 
-/* PROFILE CARD */
-
 .profile-card {
     position: relative;
 
     width: 100%;
-    min-height: 430px;
+    min-height: 410px;
 
-    padding: 38px 24px;
+    padding: 36px 24px;
 
     background:
         linear-gradient(
@@ -94,7 +90,7 @@ body {
     align-items: center;
     justify-content: center;
 
-    gap: 25px;
+    gap: 22px;
 
     overflow: hidden;
 
@@ -112,8 +108,6 @@ body {
         transform 0.4s ease,
         box-shadow 0.4s ease;
 }
-
-/* CARD LIGHT */
 
 .profile-card::before {
     content: "";
@@ -157,8 +151,6 @@ body {
 
     pointer-events: none;
 }
-
-/* PROFILE IMAGE */
 
 .profile-image {
     position: relative;
@@ -241,8 +233,6 @@ body {
         0 0 0 5px rgba(255, 255, 255, 0.035);
 }
 
-/* NAME */
-
 .name-box {
     position: relative;
     z-index: 1;
@@ -300,8 +290,6 @@ body {
         0 5px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* VERIFIED */
-
 .verified {
     width: 18px;
     height: 18px;
@@ -355,10 +343,8 @@ body {
         infinite;
 }
 
-/* CONTINUE */
-
 .continue-btn {
-    margin-top: 22px;
+    margin-top: 17px;
 
     width: 158px;
     min-height: 50px;
@@ -423,7 +409,7 @@ body {
 
     color: #ffffff;
 
-    gap: 21px;
+    gap: 20px;
 
     box-shadow:
         0 12px 28px rgba(0, 0, 0, 0.13);
@@ -445,8 +431,6 @@ body {
 
     outline-offset: 4px;
 }
-
-/* ANIMATIONS */
 
 @keyframes pageEnter {
     from {
@@ -546,8 +530,6 @@ body {
     }
 }
 
-/* SMALL PHONES */
-
 @media (max-width: 380px) {
 
     .profile-page {
@@ -555,11 +537,11 @@ body {
     }
 
     .profile-card {
-        min-height: 400px;
+        min-height: 380px;
 
-        padding: 32px 20px;
+        padding: 30px 20px;
 
-        gap: 23px;
+        gap: 21px;
 
         border-radius: 26px;
     }
@@ -587,8 +569,6 @@ body {
     }
 }
 
-/* VERY SMALL PHONES */
-
 @media (max-width: 340px) {
 
     .profile-page {
@@ -596,9 +576,9 @@ body {
     }
 
     .profile-card {
-        min-height: 370px;
+        min-height: 350px;
 
-        padding: 28px 16px;
+        padding: 26px 16px;
 
         gap: 21px;
 
@@ -621,8 +601,6 @@ body {
         border-radius: 14px;
     }
 }
-
-/* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
 

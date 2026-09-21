@@ -26,39 +26,15 @@
     <script>
         (() => {
             try {
-                const savedTheme =
-                    localStorage.getItem("zero-theme");
+                const savedTheme = localStorage.getItem("zero-theme");
 
-                if (
-                    savedTheme === "dark" ||
-                    savedTheme === "light"
-                ) {
-                    document.documentElement.setAttribute(
-                        "data-theme",
-                        savedTheme
-                    );
-
-                    return;
+                if (savedTheme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "dark");
                 }
-
-                if (
-                    window.matchMedia &&
-                    window.matchMedia(
-                        "(prefers-color-scheme: dark)"
-                    ).matches
-                ) {
-                    document.documentElement.setAttribute(
-                        "data-theme",
-                        "dark"
-                    );
-                }
-
             } catch (error) {
-                // Ignore storage access errors.
             }
         })();
     </script>
-
 
     <meta
         property="og:title"
@@ -100,11 +76,156 @@
         content="assets/profile.jpg"
     >
 
-
     <link
         rel="stylesheet"
         href="platforms.css"
     >
+
+    <style>
+        .about-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            min-height: 58px;
+            box-sizing: border-box;
+            margin-top: 14px;
+            padding: 0 20px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: var(--card);
+            color: var(--text-strong);
+            text-decoration: none;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.025);
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .about-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-strong);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .about-card:active {
+            transform: translateY(0);
+        }
+
+        .about-card:focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 3px;
+        }
+
+        .about-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .about-card-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: var(--text-soft);
+            font-size: 17px;
+            transition:
+                color 0.25s ease,
+                transform 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .about-card:hover .about-card-arrow {
+            color: var(--text-strong);
+            transform: translateX(2px);
+            background: var(--surface);
+        }
+
+        .portfolio-platform .platform-icon {
+            font-size: 0;
+        }
+
+        .portfolio-platform .platform-icon svg {
+            width: 19px;
+            height: 19px;
+            display: block;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .portfolio-platform .platform-info strong {
+            font-weight: 650;
+        }
+
+        .theme-toggle-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 17px;
+            height: 17px;
+        }
+
+        .theme-toggle-icon svg {
+            display: block;
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .theme-toggle-icon .sun-icon {
+            display: none;
+        }
+
+        html[data-theme="dark"] .theme-toggle-icon .moon-icon {
+            display: none;
+        }
+
+        html[data-theme="dark"] .theme-toggle-icon .sun-icon {
+            display: block;
+        }
+
+        @media (max-width: 380px) {
+            .about-card {
+                min-height: 54px;
+                margin-top: 12px;
+                padding: 0 17px;
+                border-radius: 16px;
+            }
+
+            .about-card-title {
+                font-size: 13px;
+            }
+
+            .about-card-arrow {
+                width: 26px;
+                height: 26px;
+            }
+
+            .portfolio-platform .platform-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .about-card,
+            .about-card-arrow {
+                transition: none;
+            }
+        }
+    </style>
 
 </head>
 
@@ -113,8 +234,6 @@
 
     <main class="links-page">
 
-
-        <!-- PROFILE -->
 
         <a
             href="index.html"
@@ -163,20 +282,17 @@
         </a>
 
 
-
-        <!-- ABOUT ZERO -->
-
         <a
             href="about.html"
-            class="about-link page-link"
+            class="about-card"
         >
 
-            <span>
+            <span class="about-card-title">
                 About Zero
             </span>
 
             <span
-                class="about-arrow"
+                class="about-card-arrow"
                 aria-hidden="true"
             >
                 →
@@ -185,13 +301,8 @@
         </a>
 
 
-
-        <!-- ACTIONS -->
-
         <div class="profile-actions">
 
-
-            <!-- SHARE -->
 
             <button
                 type="button"
@@ -244,9 +355,6 @@
             </button>
 
 
-
-            <!-- COPY -->
-
             <button
                 type="button"
                 class="action-btn"
@@ -286,9 +394,6 @@
 
             </button>
 
-
-
-            <!-- QR -->
 
             <button
                 type="button"
@@ -354,9 +459,6 @@
         </div>
 
 
-
-        <!-- THEME TOGGLE -->
-
         <div class="theme-toggle-row">
 
             <button
@@ -374,29 +476,19 @@
                 >
 
                     <svg
-                        class="theme-icon theme-icon-moon"
+                        class="moon-icon"
                         viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
                     >
 
                         <path
-                            d="M21 12.8A8.5 8.5 0 1 1 11.2 3A6.7 6.7 0 0 0 21 12.8Z"
+                            d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"
                         ></path>
 
                     </svg>
 
-
                     <svg
-                        class="theme-icon theme-icon-sun"
+                        class="sun-icon"
                         viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
                     >
 
                         <circle
@@ -407,25 +499,12 @@
 
                         <path d="M12 2v2"></path>
                         <path d="M12 20v2"></path>
-
-                        <path
-                            d="m4.93 4.93 1.41 1.41"
-                        ></path>
-
-                        <path
-                            d="m17.66 17.66 1.41 1.41"
-                        ></path>
-
+                        <path d="M4.93 4.93l1.41 1.41"></path>
+                        <path d="M17.66 17.66l1.41 1.41"></path>
                         <path d="M2 12h2"></path>
                         <path d="M20 12h2"></path>
-
-                        <path
-                            d="m6.34 17.66-1.41 1.41"
-                        ></path>
-
-                        <path
-                            d="m19.07 4.93-1.41 1.41"
-                        ></path>
+                        <path d="M4.93 19.07l1.41-1.41"></path>
+                        <path d="M17.66 6.34l1.41-1.41"></path>
 
                     </svg>
 
@@ -436,9 +515,6 @@
         </div>
 
 
-
-        <!-- QR PANEL -->
-
         <section
             class="qr-panel"
             id="qrPanel"
@@ -447,10 +523,7 @@
 
             <div class="qr-header">
 
-                <span
-                    aria-hidden="true"
-                ></span>
-
+                <span aria-hidden="true"></span>
 
                 <button
                     type="button"
@@ -477,9 +550,6 @@
         </section>
 
 
-
-        <!-- ONLINE PLATFORMS -->
-
         <section class="platforms-box">
 
             <div class="platforms-title">
@@ -487,8 +557,50 @@
             </div>
 
 
+            <a
+                href="https://zer00-day.github.io/mark-portfolio/"
+                class="platform portfolio-platform"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
 
-            <!-- FACEBOOK -->
+                <div class="platform-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <rect
+                            x="3"
+                            y="4"
+                            width="18"
+                            height="13"
+                            rx="2"
+                        ></rect>
+
+                        <path
+                            d="M8 21h8"
+                        ></path>
+
+                        <path
+                            d="M12 17v4"
+                        ></path>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="platform-info">
+                    <strong>Portfolio</strong>
+                </div>
+
+
+                <span class="arrow"></span>
+
+            </a>
+
 
             <a
                 href="https://www.facebook.com/share/1CXATNYzDx/"
@@ -504,9 +616,7 @@
                         aria-hidden="true"
                     >
 
-                        <path
-                            d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v3H6v4h3v5h4v-5h3l1-4h-4V9c0-.6.4-1 1-1Z"
-                        ></path>
+                        <path d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v3H6v4h3v5h4v-5h3l1-4h-4V9c0-.6.4-1 1-1Z"></path>
 
                     </svg>
 
@@ -518,15 +628,10 @@
                 </div>
 
 
-                <span class="arrow">
-                    ↗
-                </span>
+                <span class="arrow"></span>
 
             </a>
 
-
-
-            <!-- INSTAGRAM -->
 
             <a
                 href="https://www.instagram.com/z.er0day?stkn=MWJxcWFwbWdudng1dw=="
@@ -572,15 +677,10 @@
                 </div>
 
 
-                <span class="arrow">
-                    ↗
-                </span>
+                <span class="arrow"></span>
 
             </a>
 
-
-
-            <!-- TIKTOK -->
 
             <a
                 href="https://www.tiktok.com/@z.er0luck?_r=1&_t=ZS-99s0cFkpZpp"
@@ -596,13 +696,9 @@
                         aria-hidden="true"
                     >
 
-                        <path
-                            d="M14 4V15.5C14 17.43 12.43 19 10.5 19C8.57 19 7 17.43 7 15.5C7 13.57 8.57 12 10.5 12C11.03 12 11.54 12.12 12 12.34"
-                        ></path>
+                        <path d="M14 4V15.5C14 17.43 12.43 19 10.5 19C8.57 19 7 17.43 7 15.5C7 13.57 8.57 12 10.5 12C11.03 12 11.54 12.12 12 12.34"></path>
 
-                        <path
-                            d="M14 4C14.4 6.2 15.8 7.6 18 8"
-                        ></path>
+                        <path d="M14 4C14.4 6.2 15.8 7.6 18 8"></path>
 
                     </svg>
 
@@ -614,15 +710,10 @@
                 </div>
 
 
-                <span class="arrow">
-                    ↗
-                </span>
+                <span class="arrow"></span>
 
             </a>
 
-
-
-            <!-- WHATSAPP -->
 
             <a
                 href="https://wa.me/qr/A6TDR2RGMDMBP1"
@@ -638,13 +729,9 @@
                         aria-hidden="true"
                     >
 
-                        <path
-                            d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"
-                        ></path>
+                        <path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"></path>
 
-                        <path
-                            d="M9 8.5c.3-.5.6-.5.9-.1l.8 1c.2.3.2.5 0 .8l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.3-.2.5-.2.8 0l1 .8c.4.3.4.6-.1.9-.6.4-1.2.5-1.8.3-1.8-.5-4.2-2.9-4.7-4.7-.2-.6-.1-1.2.4-1.7Z"
-                        ></path>
+                        <path d="M9 8.5c.3-.5.6-.5.9-.1l.8 1c.2.3.2.5 0 .8l-.5.6c.6 1.1 1.5 2 2.6 2.6l.6-.5c.3-.2.5-.2.8 0l1 .8c.4.3.4.6-.1.9-.6.4-1.2.5-1.8.3-1.8-.5-4.2-2.9-4.7-4.7-.2-.6-.1-1.2.4-1.7Z"></path>
 
                     </svg>
 
@@ -656,59 +743,12 @@
                 </div>
 
 
-                <span class="arrow">
-                    ↗
-                </span>
-
-            </a>
-
-
-
-            <!-- TELEGRAM -->
-
-            <a
-                href="https://t.me/zer00luck"
-                class="platform"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-
-                <div class="platform-icon">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                    >
-
-                        <path
-                            d="M21 4L3.8 10.7c-.8.3-.8 1.1-.1 1.3l4.4 1.4 1.7 5.3c.2.7.6.7 1 .3l2.5-2.5 4.7 3.5c.6.4 1 .1 1.2-.6L21.9 5c.2-.9-.3-1.3-.9-1Z"
-                        ></path>
-
-                        <path
-                            d="M8.1 13.4L18 7.2"
-                        ></path>
-
-                    </svg>
-
-                </div>
-
-
-                <div class="platform-info">
-                    <strong>Telegram</strong>
-                </div>
-
-
-                <span class="arrow">
-                    ↗
-                </span>
+                <span class="arrow"></span>
 
             </a>
 
         </section>
 
-
-
-        <!-- FOOTER -->
 
         <footer class="footer">
             © 2026 zero. All rights reserved.
