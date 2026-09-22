@@ -19,7 +19,6 @@ html {
 
 body {
     min-height: 100vh;
-
     background:
         radial-gradient(
             circle at 50% 12%,
@@ -32,20 +31,16 @@ body {
             transparent 38%
         ),
         var(--background);
-
     font-family:
         Inter,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: #111111;
-
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
@@ -53,11 +48,8 @@ body {
 .profile-page {
     width: 100%;
     max-width: 430px;
-
     padding: 26px 24px 30px;
-
     text-align: center;
-
     animation:
         pageEnter
         0.7s
@@ -67,12 +59,9 @@ body {
 
 .profile-card {
     position: relative;
-
     width: 100%;
-    min-height: 410px;
-
-    padding: 36px 24px;
-
+    min-height: 392px;
+    padding: 32px 24px;
     background:
         linear-gradient(
             145deg,
@@ -80,30 +69,22 @@ body {
             #101010 52%,
             #0c0c0c 100%
         );
-
-    border: 1px solid rgba(255, 255, 255, 0.07);
-
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 30px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    gap: 22px;
-
+    gap: 20px;
     overflow: hidden;
-
     box-shadow:
-        0 28px 70px rgba(0, 0, 0, 0.13),
+        0 30px 72px rgba(0, 0, 0, 0.14),
         0 8px 24px rgba(0, 0, 0, 0.055);
-
     animation:
         cardEnter
         0.8s
         cubic-bezier(0.22, 1, 0.36, 1)
         both;
-
     transition:
         transform 0.4s ease,
         box-shadow 0.4s ease;
@@ -111,165 +92,121 @@ body {
 
 .profile-card::before {
     content: "";
-
     position: absolute;
-
     width: 300px;
     height: 300px;
-
     top: -170px;
     right: -120px;
-
     border-radius: 50%;
-
     background:
         radial-gradient(
             circle,
-            rgba(255, 255, 255, 0.085),
+            rgba(255, 255, 255, 0.075),
             transparent 68%
         );
-
     pointer-events: none;
 }
 
 .profile-card::after {
     content: "";
-
     position: absolute;
-
     inset: 0;
-
     background:
         linear-gradient(
             125deg,
             transparent 0%,
             transparent 45%,
-            rgba(255, 255, 255, 0.025) 50%,
+            rgba(255, 255, 255, 0.02) 50%,
             transparent 55%,
             transparent 100%
         );
-
     pointer-events: none;
 }
 
 .profile-image {
     position: relative;
     z-index: 1;
-
     width: clamp(132px, 42vw, 158px);
     aspect-ratio: 1 / 1;
-
     flex-shrink: 0;
-
     border-radius: 50%;
-
     overflow: hidden;
-
     background: #202020;
-
-    border: 2px solid rgba(255, 255, 255, 0.92);
-
+    border: 2px solid rgba(255, 255, 255, 0.94);
     box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.24),
+        0 15px 36px rgba(0, 0, 0, 0.26),
         0 0 0 5px rgba(255, 255, 255, 0.025);
-
     animation:
         imageEnter
         0.8s
         cubic-bezier(0.22, 1, 0.36, 1)
         0.08s
         both;
-
     transition:
-        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.45s ease;
+        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.4s ease;
 }
 
 .profile-image::after {
     content: "";
-
     position: absolute;
-
     inset: -18px;
-
     border-radius: 50%;
-
     background:
         radial-gradient(
             circle,
-            rgba(255, 255, 255, 0.13),
+            rgba(255, 255, 255, 0.1),
             transparent 65%
         );
-
     z-index: -1;
-
     pointer-events: none;
 }
 
 .profile-image img {
     width: 100%;
     height: 100%;
-
     display: block;
-
     object-fit: cover;
     object-position: center;
-
     animation:
         profileFloat
-        6s
+        9s
         ease-in-out
         1s
         infinite;
-
     will-change: transform;
 }
 
 .profile-card:hover .profile-image {
-    transform: translateY(-2px) scale(1.015);
-
+    transform: translateY(-2px) scale(1.012);
     box-shadow:
-        0 17px 40px rgba(0, 0, 0, 0.28),
+        0 19px 44px rgba(0, 0, 0, 0.3),
         0 0 0 5px rgba(255, 255, 255, 0.035);
 }
 
 .name-box {
     position: relative;
     z-index: 1;
-
     display: inline-flex;
     align-items: center;
-
     gap: 8px;
-
-    padding: 9px 15px;
-
-    border: 1px solid var(--muted-border);
-
-    border-radius: 999px;
-
-    background:
-        rgba(255, 255, 255, 0.025);
-
+    padding: 8px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.022);
     color: var(--text);
-
     font-size: 18px;
     font-weight: 450;
-
     line-height: 1;
-
     letter-spacing: 0.15px;
-
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
     animation:
         nameEnter
         0.7s
         ease-out
         0.2s
         both;
-
     transition:
         border-color 0.3s ease,
         background 0.3s ease,
@@ -278,107 +215,67 @@ body {
 }
 
 .profile-card:hover .name-box {
-    border-color: rgba(255, 255, 255, 0.28);
-
-    background:
-        rgba(255, 255, 255, 0.045);
-
+    border-color: rgba(255, 255, 255, 0.23);
+    background: rgba(255, 255, 255, 0.035);
     transform: translateY(-1px);
-
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.05),
-        0 5px 18px rgba(0, 0, 0, 0.08);
+        0 5px 18px rgba(0, 0, 0, 0.07);
 }
 
 .verified {
     width: 18px;
     height: 18px;
-
     border-radius: 50%;
-
     background: var(--verified);
-
     color: #ffffff;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     font-size: 10px;
     font-weight: 700;
-
     line-height: 1;
-
     flex-shrink: 0;
-
     box-shadow:
-        0 3px 10px rgba(59, 130, 246, 0.18);
-
+        0 3px 10px rgba(59, 130, 246, 0.2);
     animation:
         verifiedEnter
         0.5s
         ease-out
         0.42s
         both;
-}
-
-@keyframes verifiedPulse {
-    0%,
-    100% {
-        box-shadow:
-            0 3px 10px rgba(59, 130, 246, 0.18);
-    }
-
-    50% {
-        box-shadow:
-            0 3px 16px rgba(59, 130, 246, 0.32);
-    }
+    transition:
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
 }
 
 .profile-card:hover .verified {
-    animation:
-        verifiedPulse
-        1.8s
-        ease-in-out
-        infinite;
+    box-shadow:
+        0 4px 13px rgba(59, 130, 246, 0.24);
+    transform: scale(1.025);
 }
 
 .continue-btn {
-    margin-top: 17px;
-
+    margin-top: 16px;
     width: 158px;
     min-height: 50px;
-
     padding: 12px 18px;
-
-    background: rgba(255, 255, 255, 0.76);
-
-    border: 1px solid #222222;
-
-    border-radius: 16px;
-
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--button-border);
+    border-radius: 14px;
     color: #111111;
-
     text-decoration: none;
-
     font-size: 15px;
     font-weight: 500;
-
     line-height: 1;
-
     letter-spacing: 0.05px;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     gap: 18px;
-
     cursor: pointer;
-
     box-shadow:
-        0 5px 16px rgba(0, 0, 0, 0.045);
-
+        0 7px 20px rgba(0, 0, 0, 0.055);
     transition:
         background 0.28s ease,
         color 0.28s ease,
@@ -386,7 +283,6 @@ body {
         gap 0.28s ease,
         border-color 0.28s ease,
         box-shadow 0.28s ease;
-
     animation:
         buttonEnter
         0.7s
@@ -397,38 +293,30 @@ body {
 
 .continue-btn span:last-child {
     font-size: 18px;
-
     transition:
         transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .continue-btn:hover {
     background: #111111;
-
     border-color: #111111;
-
     color: #ffffff;
-
     gap: 20px;
-
     box-shadow:
-        0 12px 28px rgba(0, 0, 0, 0.13);
-
-    transform: translateY(-3px);
+        0 14px 32px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 .continue-btn:hover span:last-child {
-    transform:
-        translate(3px, -3px);
+    transform: translate(3px, -3px);
 }
 
 .continue-btn:active {
-    transform: translateY(0) scale(0.96);
+    transform: translateY(0) scale(0.97);
 }
 
 .continue-btn:focus-visible {
     outline: 2px solid var(--verified);
-
     outline-offset: 4px;
 }
 
@@ -483,8 +371,8 @@ body {
 
     50% {
         transform:
-            scale(1.012)
-            translateY(-2px);
+            scale(1.008)
+            translateY(-1px);
     }
 
     100% {
@@ -531,18 +419,14 @@ body {
 }
 
 @media (max-width: 380px) {
-
     .profile-page {
         padding: 20px 18px 26px;
     }
 
     .profile-card {
-        min-height: 380px;
-
-        padding: 30px 20px;
-
-        gap: 21px;
-
+        min-height: 365px;
+        padding: 28px 20px;
+        gap: 19px;
         border-radius: 26px;
     }
 
@@ -552,36 +436,28 @@ body {
 
     .name-box {
         font-size: 17px;
-
-        padding: 9px 14px;
+        padding: 8px 13px;
+        border-radius: 11px;
     }
 
     .continue-btn {
         width: 150px;
-
         min-height: 48px;
-
         padding: 10px 17px;
-
         font-size: 14px;
-
-        border-radius: 15px;
+        border-radius: 14px;
     }
 }
 
 @media (max-width: 340px) {
-
     .profile-page {
         padding: 16px;
     }
 
     .profile-card {
-        min-height: 350px;
-
-        padding: 26px 16px;
-
-        gap: 21px;
-
+        min-height: 340px;
+        padding: 24px 16px;
+        gap: 18px;
         border-radius: 24px;
     }
 
@@ -591,19 +467,17 @@ body {
 
     .name-box {
         font-size: 16px;
+        border-radius: 10px;
     }
 
     .continue-btn {
         width: 144px;
-
         min-height: 46px;
-
-        border-radius: 14px;
+        border-radius: 13px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {
